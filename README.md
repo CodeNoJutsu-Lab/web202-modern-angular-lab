@@ -1,14 +1,14 @@
-# Step 06 — Effects (Signals)
+# Step 07 — Angular Material + Header Setup
 
-This branch is the **starting point** for step 06 of the Modern Angular lab.
+This branch is the **starting point** for step 07 of the Modern Angular lab.
 
 | | |
 |---|---|
-| Course step | 07 |
-| Branch | `step-06-effects-signals` |
-| Previous | `step-05-computed-signals` |
-| Next | `step-07-angular-material-header-setup` |
-| Reference solution | `solution-step-06` tag on `solution` |
+| Course step | 08 |
+| Branch | `step-07-angular-material-header-setup` |
+| Previous | `step-06-effects-signals` |
+| Next | `step-08-products-grid-with-angular-material` |
+| Reference solution | `solution-step-07` tag on `solution` |
 
 ## Read this first
 
@@ -28,7 +28,7 @@ Then open <http://localhost:4200>.
 ## Working on your own copy
 
 ```bash
-git switch -c my-step-06
+git switch -c my-step-07
 # ...make your changes and commit...
-git diff step-06-effects-signals..solution-step-06
+git diff step-07-angular-material-header-setup..solution-step-07
 ```
