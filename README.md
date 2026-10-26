@@ -1,14 +1,14 @@
-# Step 07 — Angular Material + Header Setup
+# Step 08 — Products Grid with Angular Material
 
-This branch is the **starting point** for step 07 of the Modern Angular lab.
+This branch is the **starting point** for step 08 of the Modern Angular lab.
 
 | | |
 |---|---|
-| Course step | 08 |
-| Branch | `step-07-angular-material-header-setup` |
-| Previous | `step-06-effects-signals` |
-| Next | `step-08-products-grid-with-angular-material` |
-| Reference solution | `solution-step-07` tag on `solution` |
+| Course step | 09 |
+| Branch | `step-08-products-grid-with-angular-material` |
+| Previous | `step-07-angular-material-header-setup` |
+| Next | `step-09-rendering-lists-with-signals-and-for` |
+| Reference solution | `solution-step-08` tag on `solution` |
 
 ## Read this first
 
@@ -28,7 +28,7 @@ Then open <http://localhost:4200>.
 ## Working on your own copy
 
 ```bash
-git switch -c my-step-07
+git switch -c my-step-08
 # ...make your changes and commit...
-git diff step-07-angular-material-header-setup..solution-step-07
+git diff step-08-products-grid-with-angular-material..solution-step-08
 ```

@@ -1,86 +1,78 @@
-# Step 07 — Angular Material + Header Setup
+# Step 08 — Products Grid with Angular Material
 
-**Course step:** 08 · **Branch:** `step-07-angular-material-header-setup` · **Solution tag:** `solution-step-07`
+**Course step:** 09 · **Branch:** `step-08-products-grid-with-angular-material` · **Solution tag:** `solution-step-08`
 
 ## Goal
 
-Install Angular Material, wire a Material 3 theme and icon fonts, and replace the hello demo with a real application header.
+Create the products feature shell: a reusable product card and a responsive grid, then place the grid in the app layout.
 
 ## What you'll learn
 
-- Adding Angular Material and CDK
-- Material 3 theming with `mat.theme()`
-- Registering global styles in `angular.json`
-- Standalone Material component imports
-- Toolbar layout with a flex spacer
+- Feature folder organization (`products/`)
+- Presentational components with Angular Material cards
+- CSS Grid with `auto-fill` and `minmax`
+- Composing a page in the root component
 
 ## Starting point
 
-The app renders the `Hello` counter demo. No Material packages, theme, fonts, or header exist.
+The toolbar renders; there is no products UI. `App` only renders the header.
 
 ## Tasks
 
-- [ ] **1.** Install the packages: `npm install @angular/material @angular/cdk`.
-- [ ] **2.** Create `src/material-theme.scss` and include a `mat.theme()` call with an azure primary palette, Roboto typography, and density 0. Add sensible `html`/`body` defaults.
-- [ ] **3.** Register the theme in `angular.json` under `projects.modern-angular.architect.build.options.styles`, before `src/styles.css`.
-- [ ] **4.** Add the Roboto and Material Icons Google Fonts links to `src/index.html`.
-- [ ] **5.** Generate a `header` component (`ng g c header`).
-- [ ] **6.** In `header.ts`, import `MatToolbarModule`, `MatButtonModule`, and `MatIconModule` and add them to `imports`.
-- [ ] **7.** Build the toolbar: a store icon button, the “Modern Angular” branding, a flex spacer, a Products button, and a shopping-cart icon.
-- [ ] **8.** Add `header.css` rules for the spacer, header shadow, and branding overflow.
-- [ ] **9.** In `app.ts`, swap `Hello` for `Header`; in `app.html`, render `<app-header/>`.
+- [ ] **1.** Generate `products/product-card` and `products/products-grid` components.
+- [ ] **2.** In `product-card.ts`, import `MatCardModule` and `MatButtonModule`.
+- [ ] **3.** Build `product-card.html` with `mat-card`, `mat-card-header`, `mat-card-content`, and `mat-card-actions`; use placeholder text and an Add to Cart button.
+- [ ] **4.** Add the card CSS (`height: 100%`, flex column, `mat-card-content { flex: 1 }`).
+- [ ] **5.** In `products-grid.ts`, import `ProductCard`; in the template render five `<app-product-card/>` inside a grid container.
+- [ ] **6.** Add the responsive grid CSS (`repeat(auto-fill, minmax(280px, 1fr))`, 16px gap).
+- [ ] **7.** In `app.ts`, import `ProductsGrid`; in `app.html`, add `<main class="page"><app-products-grid/></main>` below the header.
+- [ ] **8.** Add the `.page` rule to `app.css` (max-width 1200px, centered, small padding).
 
 ## Hints
 
 <details>
-<summary><strong>Icons show as text (`shopping_cart`)</strong></summary>
+<summary><strong>Card content does not stretch</strong></summary>
 
-The Material Icons font link is missing or the icon has no `fontIcon`. Add the Google Fonts stylesheet in `index.html` and use `fontIcon="shopping_cart"`.
-
-</details>
-
-<details>
-<summary><strong>Theme not applied</strong></summary>
-
-The Sass file must be listed in `angular.json` styles. `styles.css` uses Tailwind; keep the theme first so Material variables are available.
+`mat-card-content { flex: 1 }` plus a flex-column card makes the actions sit at the bottom of equal-height cards.
 
 </details>
 
 <details>
-<summary><strong>`matButton` vs `mat-button`</strong></summary>
+<summary><strong>Grid class mismatch</strong></summary>
 
-Angular Material 21 uses the `matButton` attribute on native buttons, not the legacy `mat-button` class/attribute.
+The grid CSS class must match the template (`.grid` at this step). The next step renames it to `.products-grid`.
 
 </details>
 
 <details>
-<summary><strong>Spacer not working</strong></summary>
+<summary><strong>Component not found</strong></summary>
 
-The spacer needs `flex: 1 1 auto` and the toolbar must be a flex row (Material's toolbar already is).
+Import and register `ProductsGrid` in `App`, and `ProductCard` in `ProductsGrid`; standalone components do not inherit each other's imports.
 
 </details>
 
 ## Acceptance criteria
 
-- [ ] Toolbar spans the page with Material styling and Material icons render as glyphs
-- [ ] “Modern Angular” and the cart/product controls are visible
-- [ ] `Hello` is no longer rendered, but its files remain
+- [ ] Five identical placeholder cards appear below the toolbar
+- [ ] The grid reflows from one to multiple columns as the window widens
+- [ ] The card component is presentational and knows nothing about data yet
 - [ ] `npm run build` passes
 
 ## Files you'll touch
 
 | File | What changes |
 |---|---|
-| `package.json` | Adds `@angular/material` and `@angular/cdk` |
-| `angular.json` | Loads `src/material-theme.scss` before `styles.css` |
-| `src/index.html` | Roboto + Material Icons font links |
-| `src/material-theme.scss` | Material 3 theme |
-| `src/app/header/header.ts` | Header component + Material imports |
-| `src/app/header/header.html` | Toolbar markup |
-| `src/app/header/header.css` | Toolbar layout styles |
-| `src/app/header/header.spec.ts` | CLI-generated test |
-| `src/app/app.ts` | Imports `Header` instead of `Hello` |
-| `src/app/app.html` | Renders `<app-header/>` |
+| `src/app/products/product-card/product-card.ts` | Card component + Material imports |
+| `src/app/products/product-card/product-card.html` | mat-card placeholder markup |
+| `src/app/products/product-card/product-card.css` | Equal-height card layout |
+| `src/app/products/product-card/product-card.spec.ts` | CLI-generated test |
+| `src/app/products/products-grid/products-grid.ts` | Grid component + `ProductCard` import |
+| `src/app/products/products-grid/products-grid.html` | Five static cards |
+| `src/app/products/products-grid/products-grid.css` | Responsive grid |
+| `src/app/products/products-grid/products-grid.spec.ts` | CLI-generated test |
+| `src/app/app.ts` | Registers `ProductsGrid` |
+| `src/app/app.html` | Adds the `<main class="page">` layout |
+| `src/app/app.css` | `.page` container styles |
 
 ## Run it
 
