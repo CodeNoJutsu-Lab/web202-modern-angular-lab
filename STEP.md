@@ -1,67 +1,69 @@
-# Step 14 — Add to Cart with output()
+# Step 15 — Creating a Cart Service
 
-**Course step:** 15 · **Branch:** `step-14-add-to-cart-with-output` · **Solution tag:** `solution-step-14`
+**Course step:** 16 · **Branch:** `step-15-creating-a-cart-service` · **Solution tag:** `solution-step-15`
 
 ## Goal
 
-Emit the clicked product from the card with `output()` and handle it in the grid.
+Create a root-provided cart service, inject it into the grid, and move cart mutation out of the component.
 
 ## What you'll learn
 
-- `output<T>()`
-- Parent listening with `(addToCart)="handler($event)"`
-- Typed `$event`
-- Unidirectional data flow: data down, events up
+- `@Injectable({ providedIn: 'root' })`
+- `inject()` in a component
+- Signals inside a service
+- Immutable array updates
+- Why business logic belongs in a service
 
 ## Starting point
 
-The card shows the product and has a button, but the button has no click handler. The grid has no event listener.
+The grid logs the clicked product from `onAddToCard`. There is no cart.
 
 ## Tasks
 
-- [ ] **1.** In `product-card.ts`, import `output`.
-- [ ] **2.** Add `readonly addToCart = output<Product>()` and `protected onAddToCart() { this.addToCart.emit(this.product()); }`.
-- [ ] **3.** In `product-card.html`, bind `(click)="onAddToCart()"` on the button.
-- [ ] **4.** In `products-grid.html`, listen: `<app-product-card [product]="product" (addToCart)="onAddToCard($event)"/>`.
-- [ ] **5.** In `products-grid.ts`, add `onAddToCard(product: Product)` and log the product name for now.
+- [ ] **1.** Generate a service: `ng g service cart/cart-service` (or create the file) with `providedIn: 'root'`.
+- [ ] **2.** Hold `private readonly cartItem = signal<Product[]>([])`.
+- [ ] **3.** Implement `addToCart(product)` with `update(items => [...items, product])` (a copy, not `push`).
+- [ ] **4.** In `products-grid.ts`, inject the service: `private readonly cartService = inject(CartService)`.
+- [ ] **5.** Replace the `console.log` in `onAddToCard` with `this.cartService.addToCart(product)`.
+- [ ] **6.** Optional: compare with the commented constructor-injection version in the reference solution.
 
 ## Hints
 
 <details>
-<summary><strong>Output name</strong></summary>
+<summary><strong>`inject()` context</strong></summary>
 
-The property name `addToCart` is the event name used in the parent template.
-
-</details>
-
-<details>
-<summary><strong>`$event` type</strong></summary>
-
-With `output<Product>()`, `$event` is inferred as `Product`; no cast is needed.
+Call `inject()` in a field initializer or constructor. Calling it later inside a method throws.
 
 </details>
 
 <details>
-<summary><strong>Why not call the service here?</strong></summary>
+<summary><strong>Mutating arrays</strong></summary>
 
-The card is presentational. It reports intent; the smart container decides what to do. Step 15 moves the handling into a service.
+`update(items => { items.push(product); return items; })` mutates in place and can defeat change detection. Always return a new array.
+
+</details>
+
+<details>
+<summary><strong>Constructor injection</strong></summary>
+
+`constructor(private cartService: CartService)` still works; the course uses `inject()` for brevity. Do not do both.
 
 </details>
 
 ## Acceptance criteria
 
-- [ ] Clicking each card logs that card's product name
-- [ ] The child never touches parent state directly
-- [ ] The event is typed as `Product` in the parent handler
+- [ ] The service is a singleton available app-wide through DI
+- [ ] Clicking a card appends to the service signal
+- [ ] The grid no longer owns cart state
+- [ ] `CartService`'s generated creation test passes
 
 ## Files you'll touch
 
 | File | What changes |
 |---|---|
-| `src/app/products/product-card/product-card.ts` | Adds `addToCart` output + emitter |
-| `src/app/products/product-card/product-card.html` | Button click handler |
-| `src/app/products/products-grid/products-grid.html` | Listens to `(addToCart)` |
-| `src/app/products/products-grid/products-grid.ts` | Adds `onAddToCard` handler |
+| `src/app/cart/cart-service.ts` | Root service with a cart signal |
+| `src/app/cart/cart-service.spec.ts` | CLI-generated creation test |
+| `src/app/products/products-grid/products-grid.ts` | Injects the service and delegates |
 
 ## Run it
 
@@ -71,3 +73,7 @@ npm start
 ```
 
 Then open <http://localhost:4200>. Use `npm test` for the unit tests and `npm run build` before you compare with the solution.
+
+## Notes
+
+At this point the cart is in memory only and has no UI. Reloading the page clears it — persistence is out of scope for the course.
