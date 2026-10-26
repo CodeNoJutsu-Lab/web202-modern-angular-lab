@@ -1,0 +1,22 @@
+<div class="products-container">
+
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search Products</mat-label>
+    <input matInput [(ngModel)]="searchTerm" placeholder="e.g. headphones" />
+  </mat-form-field>
+
+  <!-- <p class="search-preview">Search Term: {{searchTerm()}}</p> -->
+
+  <div class="products-grid">
+    @for (product of filteredProducts(); track product.id) {
+      <app-product-card [product]="product" (addToCart)="onAddToCard($event)"/>
+    } @empty {
+      <div class="empty-state">
+        <mat-icon>inventory_2</mat-icon>
+        <h3>No products match your search</h3>
+      </div>
+    }
+  </div>
+
+   <h3 class="text-lg font-bold tracking-tight text-heading md:text-xl py-1">Total products: {{products().length}}</h3>
+</div>
