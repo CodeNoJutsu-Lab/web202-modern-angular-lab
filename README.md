@@ -1,14 +1,14 @@
-# Step 10 — Passing Data to Child Components with input()
+# Step 11 — Conditional Rendering with @if and @else
 
-This branch is the **starting point** for step 10 of the Modern Angular lab.
+This branch is the **starting point** for step 11 of the Modern Angular lab.
 
 | | |
 |---|---|
-| Course step | 11 |
-| Branch | `step-10-passing-data-with-input` |
-| Previous | `step-09-rendering-lists-with-signals-and-for` |
-| Next | `step-11-conditional-rendering-with-if-else` |
-| Reference solution | `solution-step-10` tag on `solution` |
+| Course step | 12 |
+| Branch | `step-11-conditional-rendering-with-if-else` |
+| Previous | `step-10-passing-data-with-input` |
+| Next | `step-12-writable-signals-for-search-state` |
+| Reference solution | `solution-step-11` tag on `solution` |
 
 ## Read this first
 
@@ -28,7 +28,7 @@ Then open <http://localhost:4200>.
 ## Working on your own copy
 
 ```bash
-git switch -c my-step-10
+git switch -c my-step-11
 # ...make your changes and commit...
-git diff step-10-passing-data-with-input..solution-step-10
+git diff step-11-conditional-rendering-with-if-else..solution-step-11
 ```

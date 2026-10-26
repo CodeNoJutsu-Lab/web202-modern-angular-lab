@@ -1,78 +1,67 @@
-# Step 10 — Passing Data to Child Components with input()
+# Step 11 — Conditional Rendering with @if and @else
 
-**Course step:** 11 · **Branch:** `step-10-passing-data-with-input` · **Solution tag:** `solution-step-10`
+**Course step:** 12 · **Branch:** `step-11-conditional-rendering-with-if-else` · **Solution tag:** `solution-step-11`
 
 ## Goal
 
-Pass each product into the card with signal inputs and render real product data.
+Render sale and regular prices with `@if` / `@else`, and style the sale state.
 
 ## What you'll learn
 
-- `input.required<T>()`
-- Optional inputs with a default: `input(...)`
-- Binding inputs in a parent template
-- Calling input signals in the child template
+- `@if` / `@else` control flow
+- Conditional UI from optional data
+- Class-based styling with Material system variables
+- Removing stale placeholder markup
 
 ## Starting point
 
-`ProductsGrid` has a `products` signal and loops with `@for`, but `ProductCard` has no inputs and renders placeholder text.
+The card renders name, description, price, and button. Every product looks the same, even the ones with `originalPrice`.
 
 ## Tasks
 
-- [ ] **1.** In `product-card.ts`, import `input` and `Product`.
-- [ ] **2.** Add `readonly product = input.required<Product>()` and `readonly addButtonLabel = input('Add to Cart')`.
-- [ ] **3.** Update the card template to render `product().name`, `product().description`, `product().price`, and `addButtonLabel()`.
-- [ ] **4.** In `products-grid.html`, bind the product: `<app-product-card [product]="product"/>`.
-- [ ] **5.** Move the total-products heading below the grid and add `margin-top: 5px` to the grid.
-- [ ] **6.** Update the generated `product-card.spec.ts`: set the required input with `fixture.componentRef.setInput('product', {...})` before `whenStable()`, then run `npm test`.
+- [ ] **1.** Remove the `<mat-card-subtitle>Category</mat-card-subtitle>` placeholder.
+- [ ] **2.** Wrap the price area in `@if (product().originalPrice) { ... } @else { ... }`.
+- [ ] **3.** In the sale branch, show an “On Sale” badge and both the current and original prices.
+- [ ] **4.** In the `@else` branch, show only the current price.
+- [ ] **5.** Add CSS for `.sale-badge`, `.price-row`, `.current-price`, and `.original-price` (strikethrough).
+- [ ] **6.** Check the two products with `originalPrice` — both should show the sale treatment.
 
 ## Hints
 
 <details>
-<summary><strong>Required input error</strong></summary>
+<summary><strong>Truthiness is enough</strong></summary>
 
-`input.required<Product>()` throws if the parent forgets `[product]`. That is the point — it makes the contract explicit.
-
-</details>
-
-<details>
-<summary><strong>Reading inputs</strong></summary>
-
-Inputs are signals. Use `product()` in the template, not `product`.
+`originalPrice` is optional. `@if (product().originalPrice)` is false when it is `undefined` (and also when it is `0`, which is fine for this data).
 
 </details>
 
 <details>
-<summary><strong>Alias not needed</strong></summary>
+<summary><strong>`@else` placement</strong></summary>
 
-The property name `product` becomes the binding name `[product]`.
+`@else` must immediately follow the closing brace of the `@if` block.
 
 </details>
 
 <details>
-<summary><strong>The generated card spec now fails</strong></summary>
+<summary><strong>CSS variables</strong></summary>
 
-After adding `input.required`, creating `ProductCard` in isolation throws `NG0950: Input "product" is required but no value is available yet`. Provide a value before stability: `fixture.componentRef.setInput('product', { id: 1, name: 'Test', description: '...', price: 1 })`.
+`var(--mat-sys-primary)` and `var(--mat-sys-on-surface-variant)` come from the Material theme; they keep the badge on-brand in light/dark themes.
 
 </details>
 
 ## Acceptance criteria
 
-- [ ] The three cards show real names, descriptions, and prices
-- [ ] The button label comes from the input default
-- [ ] The parent does not pass `addButtonLabel` (the default is intentional)
-- [ ] No `@Input()` decorators are used
-- [ ] `npm test` passes (including the updated `ProductCard` spec)
+- [ ] Sale products show a badge and a struck-through original price
+- [ ] The regular product shows only one price
+- [ ] Description still renders below the price block
+- [ ] No `*ngIf` is used
 
 ## Files you'll touch
 
 | File | What changes |
 |---|---|
-| `src/app/products/product-card/product-card.ts` | `input.required<Product>()` + optional label input |
-| `src/app/products/product-card/product-card.html` | Renders `product()` data |
-| `src/app/products/product-card/product-card.spec.ts` | Provides the required input in the test |
-| `src/app/products/products-grid/products-grid.html` | Passes `[product]="product"` |
-| `src/app/products/products-grid/products-grid.css` | Grid margin tweak |
+| `src/app/products/product-card/product-card.html` | `@if` / `@else` price block, subtitle removed |
+| `src/app/products/product-card/product-card.css` | Sale badge and price styles |
 
 ## Run it
 
