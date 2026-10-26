@@ -1,14 +1,14 @@
-# Step 13 — Filtering Products with Computed Signals
+# Step 14 — Add to Cart with output()
 
-This branch is the **starting point** for step 13 of the Modern Angular lab.
+This branch is the **starting point** for step 14 of the Modern Angular lab.
 
 | | |
 |---|---|
-| Course step | 14 |
-| Branch | `step-13-filtering-products-with-computed-signals` |
-| Previous | `step-12-writable-signals-for-search-state` |
-| Next | `step-14-add-to-cart-with-output` |
-| Reference solution | `solution-step-13` tag on `solution` |
+| Course step | 15 |
+| Branch | `step-14-add-to-cart-with-output` |
+| Previous | `step-13-filtering-products-with-computed-signals` |
+| Next | `step-15-creating-a-cart-service` |
+| Reference solution | `solution-step-14` tag on `solution` |
 
 ## Read this first
 
@@ -28,7 +28,7 @@ Then open <http://localhost:4200>.
 ## Working on your own copy
 
 ```bash
-git switch -c my-step-13
+git switch -c my-step-14
 # ...make your changes and commit...
-git diff step-13-filtering-products-with-computed-signals..solution-step-13
+git diff step-14-add-to-cart-with-output..solution-step-14
 ```

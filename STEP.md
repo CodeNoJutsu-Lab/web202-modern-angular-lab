@@ -1,67 +1,67 @@
-# Step 13 — Filtering Products with Computed Signals
+# Step 14 — Add to Cart with output()
 
-**Course step:** 14 · **Branch:** `step-13-filtering-products-with-computed-signals` · **Solution tag:** `solution-step-13`
+**Course step:** 15 · **Branch:** `step-14-add-to-cart-with-output` · **Solution tag:** `solution-step-14`
 
 ## Goal
 
-Derive a filtered product list with `computed()` and feed the `@for` from it.
+Emit the clicked product from the card with `output()` and handle it in the grid.
 
 ## What you'll learn
 
-- `computed()` over a signal array
-- Normalizing user input (lowercase + trim)
-- Filtering without mutating source state
-- Empty results and the `@empty` block
+- `output<T>()`
+- Parent listening with `(addToCart)="handler($event)"`
+- Typed `$event`
+- Unidirectional data flow: data down, events up
 
 ## Starting point
 
-`searchTerm` exists and the preview updates, but the grid still renders `products()`.
+The card shows the product and has a button, but the button has no click handler. The grid has no event listener.
 
 ## Tasks
 
-- [ ] **1.** Import `computed` in `products-grid.ts`.
-- [ ] **2.** Add `filteredProducts = computed(() => ...)` that lowercases/trims the term, returns all products for an empty term, and filters by product name.
-- [ ] **3.** Change the loop to `@for (product of filteredProducts(); track product.id)`.
-- [ ] **4.** Update the `@empty` message to “No products match your search”.
-- [ ] **5.** Comment out or remove the search preview.
-- [ ] **6.** Try “watch”, “head”, and a nonsense term; verify the empty state.
+- [ ] **1.** In `product-card.ts`, import `output`.
+- [ ] **2.** Add `readonly addToCart = output<Product>()` and `protected onAddToCart() { this.addToCart.emit(this.product()); }`.
+- [ ] **3.** In `product-card.html`, bind `(click)="onAddToCart()"` on the button.
+- [ ] **4.** In `products-grid.html`, listen: `<app-product-card [product]="product" (addToCart)="onAddToCard($event)"/>`.
+- [ ] **5.** In `products-grid.ts`, add `onAddToCard(product: Product)` and log the product name for now.
 
 ## Hints
 
 <details>
-<summary><strong>Signals compose</strong></summary>
+<summary><strong>Output name</strong></summary>
 
-`filteredProducts` reads `searchTerm()` and `products()`, so Angular recomputes it when either changes.
-
-</details>
-
-<details>
-<summary><strong>Return all for an empty term</strong></summary>
-
-Without the early return, `''.includes('')` is true for every product, but the early return is clearer and avoids extra work.
+The property name `addToCart` is the event name used in the parent template.
 
 </details>
 
 <details>
-<summary><strong>Case and whitespace</strong></summary>
+<summary><strong>`$event` type</strong></summary>
 
-Normalize both sides: `term = searchTerm().toLocaleLowerCase().trim()` and compare with `product.name.toLocaleLowerCase()`.
+With `output<Product>()`, `$event` is inferred as `Product`; no cast is needed.
+
+</details>
+
+<details>
+<summary><strong>Why not call the service here?</strong></summary>
+
+The card is presentational. It reports intent; the smart container decides what to do. Step 15 moves the handling into a service.
 
 </details>
 
 ## Acceptance criteria
 
-- [ ] Searching narrows the grid live
-- [ ] Clearing the input restores all products
-- [ ] A non-matching term shows the empty state
-- [ ] `products` is never mutated; filtering produces a new array
+- [ ] Clicking each card logs that card's product name
+- [ ] The child never touches parent state directly
+- [ ] The event is typed as `Product` in the parent handler
 
 ## Files you'll touch
 
 | File | What changes |
 |---|---|
-| `src/app/products/products-grid/products-grid.ts` | Adds `filteredProducts` computed |
-| `src/app/products/products-grid/products-grid.html` | Loops over `filteredProducts()` and updates empty text |
+| `src/app/products/product-card/product-card.ts` | Adds `addToCart` output + emitter |
+| `src/app/products/product-card/product-card.html` | Button click handler |
+| `src/app/products/products-grid/products-grid.html` | Listens to `(addToCart)` |
+| `src/app/products/products-grid/products-grid.ts` | Adds `onAddToCard` handler |
 
 ## Run it
 
@@ -71,7 +71,3 @@ npm start
 ```
 
 Then open <http://localhost:4200>. Use `npm test` for the unit tests and `npm run build` before you compare with the solution.
-
-## Notes
-
-The original course commit also appends `|| this.products().toLocaleString().includes(term)`. That fallback can never run (an empty array is truthy) and would return a boolean if it did. The reference solution keeps the commit's code for fidelity; remove the fallback and, if you want, also search `description`.
