@@ -1,14 +1,14 @@
-# Step 04 — Introducing Signals
+# Step 05 — Computed Signals
 
-This branch is the **starting point** for step 04 of the Modern Angular lab.
+This branch is the **starting point** for step 05 of the Modern Angular lab.
 
 | | |
 |---|---|
-| Course step | 05 |
-| Branch | `step-04-introducing-signals` |
-| Previous | `step-03-component-templates-and-interaction` |
-| Next | `step-05-computed-signals` |
-| Reference solution | `solution-step-04` tag on `solution` |
+| Course step | 06 |
+| Branch | `step-05-computed-signals` |
+| Previous | `step-04-introducing-signals` |
+| Next | `step-06-effects-signals` |
+| Reference solution | `solution-step-05` tag on `solution` |
 
 ## Read this first
 
@@ -28,7 +28,7 @@ Then open <http://localhost:4200>.
 ## Working on your own copy
 
 ```bash
-git switch -c my-step-04
+git switch -c my-step-05
 # ...make your changes and commit...
-git diff step-04-introducing-signals..solution-step-04
+git diff step-05-computed-signals..solution-step-05
 ```

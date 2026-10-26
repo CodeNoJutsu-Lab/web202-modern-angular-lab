@@ -1,65 +1,64 @@
-# Step 04 — Introducing Signals
+# Step 05 — Computed Signals
 
-**Course step:** 05 · **Branch:** `step-04-introducing-signals` · **Solution tag:** `solution-step-04`
+**Course step:** 06 · **Branch:** `step-05-computed-signals` · **Solution tag:** `solution-step-05`
 
 ## Goal
 
-Replace plain fields with a writable signal and use `.set()` / `.update()` to drive a counter.
+Derive state with a computed signal so the doubled value stays in sync automatically.
 
 ## What you'll learn
 
-- Creating state with `signal()`
-- Reading a signal in a template with `count()`
-- Updating with `update()` and resetting with `set()`
-- Why signals are read as functions
+- `computed()` for derived state
+- Dependency tracking between signals
+- Why derived state should not be duplicated
+- Read-only nature of computed signals
 
 ## Starting point
 
-`Hello` has `title`, `isDisabled`, and `onClick()`; there is no counter yet.
+`count` is a writable signal and the template shows only the raw count.
 
 ## Tasks
 
-- [ ] **1.** Import `signal` from `@angular/core`.
-- [ ] **2.** Add `protected count = signal(0)`.
-- [ ] **3.** Add `increaseCounter()`, `descreaseCounter()`, and `resetCounter()` using `this.count.update(...)` and `this.count.set(0)`.
-- [ ] **4.** In `hello.html`, wrap the content in `<div class="p-2">` and add `{{ count() }}` plus the `+`, `-`, and `RESET` buttons.
-- [ ] **5.** Click the buttons and confirm the number changes immediately.
+- [ ] **1.** Import `computed` and add `protected doubleCount = computed(() => this.count() * 2)`.
+- [ ] **2.** Update the template to show `Count: {{ count() }}` and `Double Count: {{ doubleCount() }}`.
+- [ ] **3.** Mark `increaseCounter`, `descreaseCounter`, and `resetCounter` as `protected` so the template can keep calling them.
+- [ ] **4.** Click + and − and verify both numbers stay in sync.
 
 ## Hints
 
 <details>
-<summary><strong>Why `count()`?</strong></summary>
+<summary><strong>Computed is lazy and cached</strong></summary>
 
-A signal is a getter function. `count` is the signal object; `count()` reads its current value, and Angular tracks that read for change detection.
-
-</details>
-
-<details>
-<summary><strong>`update` vs `set`</strong></summary>
-
-`update(fn)` receives the previous value and returns the next one — ideal for increments. `set(value)` replaces the value outright.
+The function runs when the value is read and is recomputed only when a signal it read changes. Do not call `doubleCount.set(...)`.
 
 </details>
 
 <details>
-<summary><strong>Tailwind classes</strong></summary>
+<summary><strong>Do not write to computed</strong></summary>
 
-Classes like `p-2` and `bg-blue-600` come from the global Tailwind import in `src/styles.css`. They are cosmetic; the lab works without them.
+`computed()` returns a read-only signal. Derive it from `count`; never try to assign to it.
+
+</details>
+
+<details>
+<summary><strong>Methods must be visible to the template</strong></summary>
+
+If you made the handlers `private`, the template cannot call them. Use `protected`.
 
 </details>
 
 ## Acceptance criteria
 
-- [ ] Counter starts at 0; + and − change it; RESET returns to 0
-- [ ] State is a `WritableSignal`, not a plain number
-- [ ] Template reads the signal with `count()`
+- [ ] Double Count is always exactly twice Count
+- [ ] No manual update of `doubleCount` exists
+- [ ] Template reads both signals with `()`
 
 ## Files you'll touch
 
 | File | What changes |
 |---|---|
-| `src/app/hello/hello.ts` | Adds `count` signal and the three handlers |
-| `src/app/hello/hello.html` | Counter readout and buttons |
+| `src/app/hello/hello.ts` | Adds `doubleCount` computed and `protected` handlers |
+| `src/app/hello/hello.html` | Displays both values |
 
 ## Run it
 
