@@ -50,6 +50,10 @@ export class ProductsGrid {
     this.searchTerm.set("");
   }
 
+  protected onAddToCard(product: Product){
+    console.log("Added to cart: ", product.name);
+  }
+
   // protected trimSearch(){
   //   this.searchTerm.update((value) => value.trim());
   // }
