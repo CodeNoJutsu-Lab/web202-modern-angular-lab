@@ -1,14 +1,14 @@
-# Step 11 — Conditional Rendering with @if and @else
+# Step 12 — Writable Signals for Search State
 
-This branch is the **starting point** for step 11 of the Modern Angular lab.
+This branch is the **starting point** for step 12 of the Modern Angular lab.
 
 | | |
 |---|---|
-| Course step | 12 |
-| Branch | `step-11-conditional-rendering-with-if-else` |
-| Previous | `step-10-passing-data-with-input` |
-| Next | `step-12-writable-signals-for-search-state` |
-| Reference solution | `solution-step-11` tag on `solution` |
+| Course step | 13 |
+| Branch | `step-12-writable-signals-for-search-state` |
+| Previous | `step-11-conditional-rendering-with-if-else` |
+| Next | `step-13-filtering-products-with-computed-signals` |
+| Reference solution | `solution-step-12` tag on `solution` |
 
 ## Read this first
 
@@ -28,7 +28,7 @@ Then open <http://localhost:4200>.
 ## Working on your own copy
 
 ```bash
-git switch -c my-step-11
+git switch -c my-step-12
 # ...make your changes and commit...
-git diff step-11-conditional-rendering-with-if-else..solution-step-11
+git diff step-12-writable-signals-for-search-state..solution-step-12
 ```

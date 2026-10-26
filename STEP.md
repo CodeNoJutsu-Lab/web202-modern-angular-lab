@@ -1,67 +1,68 @@
-# Step 11 — Conditional Rendering with @if and @else
+# Step 12 — Writable Signals for Search State
 
-**Course step:** 12 · **Branch:** `step-11-conditional-rendering-with-if-else` · **Solution tag:** `solution-step-11`
+**Course step:** 13 · **Branch:** `step-12-writable-signals-for-search-state` · **Solution tag:** `solution-step-12`
 
 ## Goal
 
-Render sale and regular prices with `@if` / `@else`, and style the sale state.
+Add a search field backed by a writable signal, bound two-way with `ngModel`.
 
 ## What you'll learn
 
-- `@if` / `@else` control flow
-- Conditional UI from optional data
-- Class-based styling with Material system variables
-- Removing stale placeholder markup
+- Writable signals as form state
+- `[(ngModel)]` two-way binding with a signal (Angular 21)
+- Material form field + input modules
+- Keeping derived state (filtering) out of this step
 
 ## Starting point
 
-The card renders name, description, price, and button. Every product looks the same, even the ones with `originalPrice`.
+The grid displays all products. There is no search UI or `searchTerm` state.
 
 ## Tasks
 
-- [ ] **1.** Remove the `<mat-card-subtitle>Category</mat-card-subtitle>` placeholder.
-- [ ] **2.** Wrap the price area in `@if (product().originalPrice) { ... } @else { ... }`.
-- [ ] **3.** In the sale branch, show an “On Sale” badge and both the current and original prices.
-- [ ] **4.** In the `@else` branch, show only the current price.
-- [ ] **5.** Add CSS for `.sale-badge`, `.price-row`, `.current-price`, and `.original-price` (strikethrough).
-- [ ] **6.** Check the two products with `originalPrice` — both should show the sale treatment.
+- [ ] **1.** Import `MatInputModule`, `FormsModule`, and `MatFormFieldModule` in `products-grid.ts` and add them to `imports`.
+- [ ] **2.** Add `protected readonly searchTerm = signal('')`.
+- [ ] **3.** Add a `mat-form-field` with `mat-label` “Search Products” and an `<input matInput [(ngModel)]="searchTerm" placeholder="e.g. headphones"/>`.
+- [ ] **4.** Show a temporary preview: `<p class="search-preview">Search Term: {{ searchTerm() }}</p>`.
+- [ ] **5.** Add `clearSearch()` (`.set('')`) and optionally `trimSearch()` (`.update(v => v.trim())`).
+- [ ] **6.** Add `.search-field` and `.search-preview` styles.
 
 ## Hints
 
 <details>
-<summary><strong>Truthiness is enough</strong></summary>
+<summary><strong>Two-way binding to a signal</strong></summary>
 
-`originalPrice` is optional. `@if (product().originalPrice)` is false when it is `undefined` (and also when it is `0`, which is fine for this data).
-
-</details>
-
-<details>
-<summary><strong>`@else` placement</strong></summary>
-
-`@else` must immediately follow the closing brace of the `@if` block.
+Angular 21 understands a writable signal on the right-hand side of `[(ngModel)]` and writes through it. Do not replace it with a plain string field.
 
 </details>
 
 <details>
-<summary><strong>CSS variables</strong></summary>
+<summary><strong>Missing `matInput`</strong></summary>
 
-`var(--mat-sys-primary)` and `var(--mat-sys-on-surface-variant)` come from the Material theme; they keep the badge on-brand in light/dark themes.
+The `matInput` attribute is what wires the native input into the Material form field.
+
+</details>
+
+<details>
+<summary><strong>`ngModel` without `name`</strong></summary>
+
+Outside a form, no `name` is required. If you later wrap this in a `<form>`, add `name="search"` or use `[ngModelOptions]="{standalone: true}"`.
 
 </details>
 
 ## Acceptance criteria
 
-- [ ] Sale products show a badge and a struck-through original price
-- [ ] The regular product shows only one price
-- [ ] Description still renders below the price block
-- [ ] No `*ngIf` is used
+- [ ] Typing updates the preview immediately
+- [ ] The input is a Material outlined form field
+- [ ] `searchTerm` is a writable signal; the template reads it with `searchTerm()`
+- [ ] No filtering happens yet — the grid still shows all products
 
 ## Files you'll touch
 
 | File | What changes |
 |---|---|
-| `src/app/products/product-card/product-card.html` | `@if` / `@else` price block, subtitle removed |
-| `src/app/products/product-card/product-card.css` | Sale badge and price styles |
+| `src/app/products/products-grid/products-grid.ts` | `searchTerm` signal + Material/forms imports + clearSearch |
+| `src/app/products/products-grid/products-grid.html` | Search form field and preview |
+| `src/app/products/products-grid/products-grid.css` | Search field/preview styles |
 
 ## Run it
 
@@ -71,3 +72,7 @@ npm start
 ```
 
 Then open <http://localhost:4200>. Use `npm test` for the unit tests and `npm run build` before you compare with the solution.
+
+## Notes
+
+`clearSearch()` is not wired to a button in the course. Add a suffix clear icon as an optional polish task; step 13 is where the signal starts driving the list.
