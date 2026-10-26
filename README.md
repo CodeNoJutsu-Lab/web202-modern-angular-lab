@@ -1,14 +1,14 @@
-# Step 02 — Your First Standalone Component
+# Step 03 — Component Templates & Interaction
 
-This branch is the **starting point** for step 02 of the Modern Angular lab.
+This branch is the **starting point** for step 03 of the Modern Angular lab.
 
 | | |
 |---|---|
-| Course step | 03 |
-| Branch | `step-02-your-first-standalone-component` |
-| Previous | `step-01-development-environment-setup` |
-| Next | `step-03-component-templates-and-interaction` |
-| Reference solution | `solution-step-02` tag on `solution` |
+| Course step | 04 |
+| Branch | `step-03-component-templates-and-interaction` |
+| Previous | `step-02-your-first-standalone-component` |
+| Next | `step-04-introducing-signals` |
+| Reference solution | `solution-step-03` tag on `solution` |
 
 ## Read this first
 
@@ -28,7 +28,7 @@ Then open <http://localhost:4200>.
 ## Working on your own copy
 
 ```bash
-git switch -c my-step-02
+git switch -c my-step-03
 # ...make your changes and commit...
-git diff step-02-your-first-standalone-component..solution-step-02
+git diff step-03-component-templates-and-interaction..solution-step-03
 ```
