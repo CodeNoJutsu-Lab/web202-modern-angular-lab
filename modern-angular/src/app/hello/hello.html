@@ -1,5 +1,16 @@
+<div class="p-2">
+
 <p>This is my first standalone component</p>
 
 <h1>{{title}}</h1>
 
 <button [disabled]="isDisabled" (click)="onClick()">Toggle</button>
+
+<h2>{{count()}}</h2>
+
+<button (click)="increaseCounter()" class="border-2 bg-blue-600 p-0.5 mr-0.5">+</button>
+<button (click)="descreaseCounter()" class="border-2 bg-red-500 p-0.5">-</button>
+<br/>
+
+<button (click)="resetCounter()">RESET</button>
+</div>
