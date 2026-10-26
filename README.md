@@ -1,14 +1,14 @@
-# Step 01 — Development Environment Setup
+# Step 02 — Your First Standalone Component
 
-This branch is the **starting point** for step 01 of the Modern Angular lab.
+This branch is the **starting point** for step 02 of the Modern Angular lab.
 
 | | |
 |---|---|
-| Course step | 02 |
-| Branch | `step-01-development-environment-setup` |
-| Previous | — (start here) |
-| Next | `step-02-your-first-standalone-component` |
-| Reference solution | `solution-step-01` tag on `solution` |
+| Course step | 03 |
+| Branch | `step-02-your-first-standalone-component` |
+| Previous | `step-01-development-environment-setup` |
+| Next | `step-03-component-templates-and-interaction` |
+| Reference solution | `solution-step-02` tag on `solution` |
 
 ## Read this first
 
@@ -28,7 +28,7 @@ Then open <http://localhost:4200>.
 ## Working on your own copy
 
 ```bash
-git switch -c my-step-01
+git switch -c my-step-02
 # ...make your changes and commit...
-git diff step-01-development-environment-setup..solution-step-01
+git diff step-02-your-first-standalone-component..solution-step-02
 ```
