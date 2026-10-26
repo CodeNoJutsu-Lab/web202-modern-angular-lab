@@ -1,68 +1,67 @@
-# Step 12 — Writable Signals for Search State
+# Step 13 — Filtering Products with Computed Signals
 
-**Course step:** 13 · **Branch:** `step-12-writable-signals-for-search-state` · **Solution tag:** `solution-step-12`
+**Course step:** 14 · **Branch:** `step-13-filtering-products-with-computed-signals` · **Solution tag:** `solution-step-13`
 
 ## Goal
 
-Add a search field backed by a writable signal, bound two-way with `ngModel`.
+Derive a filtered product list with `computed()` and feed the `@for` from it.
 
 ## What you'll learn
 
-- Writable signals as form state
-- `[(ngModel)]` two-way binding with a signal (Angular 21)
-- Material form field + input modules
-- Keeping derived state (filtering) out of this step
+- `computed()` over a signal array
+- Normalizing user input (lowercase + trim)
+- Filtering without mutating source state
+- Empty results and the `@empty` block
 
 ## Starting point
 
-The grid displays all products. There is no search UI or `searchTerm` state.
+`searchTerm` exists and the preview updates, but the grid still renders `products()`.
 
 ## Tasks
 
-- [ ] **1.** Import `MatInputModule`, `FormsModule`, and `MatFormFieldModule` in `products-grid.ts` and add them to `imports`.
-- [ ] **2.** Add `protected readonly searchTerm = signal('')`.
-- [ ] **3.** Add a `mat-form-field` with `mat-label` “Search Products” and an `<input matInput [(ngModel)]="searchTerm" placeholder="e.g. headphones"/>`.
-- [ ] **4.** Show a temporary preview: `<p class="search-preview">Search Term: {{ searchTerm() }}</p>`.
-- [ ] **5.** Add `clearSearch()` (`.set('')`) and optionally `trimSearch()` (`.update(v => v.trim())`).
-- [ ] **6.** Add `.search-field` and `.search-preview` styles.
+- [ ] **1.** Import `computed` in `products-grid.ts`.
+- [ ] **2.** Add `filteredProducts = computed(() => ...)` that lowercases/trims the term, returns all products for an empty term, and filters by product name.
+- [ ] **3.** Change the loop to `@for (product of filteredProducts(); track product.id)`.
+- [ ] **4.** Update the `@empty` message to “No products match your search”.
+- [ ] **5.** Comment out or remove the search preview.
+- [ ] **6.** Try “watch”, “head”, and a nonsense term; verify the empty state.
 
 ## Hints
 
 <details>
-<summary><strong>Two-way binding to a signal</strong></summary>
+<summary><strong>Signals compose</strong></summary>
 
-Angular 21 understands a writable signal on the right-hand side of `[(ngModel)]` and writes through it. Do not replace it with a plain string field.
-
-</details>
-
-<details>
-<summary><strong>Missing `matInput`</strong></summary>
-
-The `matInput` attribute is what wires the native input into the Material form field.
+`filteredProducts` reads `searchTerm()` and `products()`, so Angular recomputes it when either changes.
 
 </details>
 
 <details>
-<summary><strong>`ngModel` without `name`</strong></summary>
+<summary><strong>Return all for an empty term</strong></summary>
 
-Outside a form, no `name` is required. If you later wrap this in a `<form>`, add `name="search"` or use `[ngModelOptions]="{standalone: true}"`.
+Without the early return, `''.includes('')` is true for every product, but the early return is clearer and avoids extra work.
+
+</details>
+
+<details>
+<summary><strong>Case and whitespace</strong></summary>
+
+Normalize both sides: `term = searchTerm().toLocaleLowerCase().trim()` and compare with `product.name.toLocaleLowerCase()`.
 
 </details>
 
 ## Acceptance criteria
 
-- [ ] Typing updates the preview immediately
-- [ ] The input is a Material outlined form field
-- [ ] `searchTerm` is a writable signal; the template reads it with `searchTerm()`
-- [ ] No filtering happens yet — the grid still shows all products
+- [ ] Searching narrows the grid live
+- [ ] Clearing the input restores all products
+- [ ] A non-matching term shows the empty state
+- [ ] `products` is never mutated; filtering produces a new array
 
 ## Files you'll touch
 
 | File | What changes |
 |---|---|
-| `src/app/products/products-grid/products-grid.ts` | `searchTerm` signal + Material/forms imports + clearSearch |
-| `src/app/products/products-grid/products-grid.html` | Search form field and preview |
-| `src/app/products/products-grid/products-grid.css` | Search field/preview styles |
+| `src/app/products/products-grid/products-grid.ts` | Adds `filteredProducts` computed |
+| `src/app/products/products-grid/products-grid.html` | Loops over `filteredProducts()` and updates empty text |
 
 ## Run it
 
@@ -75,4 +74,4 @@ Then open <http://localhost:4200>. Use `npm test` for the unit tests and `npm ru
 
 ## Notes
 
-`clearSearch()` is not wired to a button in the course. Add a suffix clear icon as an optional polish task; step 13 is where the signal starts driving the list.
+The original course commit also appends `|| this.products().toLocaleString().includes(term)`. That fallback can never run (an empty array is truthy) and would return a boolean if it did. The reference solution keeps the commit's code for fidelity; remove the fallback and, if you want, also search `description`.
