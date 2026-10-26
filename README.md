@@ -1,14 +1,14 @@
-# Step 03 — Component Templates & Interaction
+# Step 04 — Introducing Signals
 
-This branch is the **starting point** for step 03 of the Modern Angular lab.
+This branch is the **starting point** for step 04 of the Modern Angular lab.
 
 | | |
 |---|---|
-| Course step | 04 |
-| Branch | `step-03-component-templates-and-interaction` |
-| Previous | `step-02-your-first-standalone-component` |
-| Next | `step-04-introducing-signals` |
-| Reference solution | `solution-step-03` tag on `solution` |
+| Course step | 05 |
+| Branch | `step-04-introducing-signals` |
+| Previous | `step-03-component-templates-and-interaction` |
+| Next | `step-05-computed-signals` |
+| Reference solution | `solution-step-04` tag on `solution` |
 
 ## Read this first
 
@@ -28,7 +28,7 @@ Then open <http://localhost:4200>.
 ## Working on your own copy
 
 ```bash
-git switch -c my-step-03
+git switch -c my-step-04
 # ...make your changes and commit...
-git diff step-03-component-templates-and-interaction..solution-step-03
+git diff step-04-introducing-signals..solution-step-04
 ```

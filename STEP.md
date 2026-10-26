@@ -1,66 +1,65 @@
-# Step 03 — Component Templates & Interaction
+# Step 04 — Introducing Signals
 
-**Course step:** 04 · **Branch:** `step-03-component-templates-and-interaction` · **Solution tag:** `solution-step-03`
+**Course step:** 05 · **Branch:** `step-04-introducing-signals` · **Solution tag:** `solution-step-04`
 
 ## Goal
 
-Make the `Hello` component interactive: interpolate state, bind it to the DOM, and react to a click.
+Replace plain fields with a writable signal and use `.set()` / `.update()` to drive a counter.
 
 ## What you'll learn
 
-- Interpolation with `{{ }}`
-- Property binding with `[disabled]`
-- Event binding with `(click)`
-- Component state as plain class fields
+- Creating state with `signal()`
+- Reading a signal in a template with `count()`
+- Updating with `update()` and resetting with `set()`
+- Why signals are read as functions
 
 ## Starting point
 
-`Hello` renders one static paragraph and has an empty class body.
+`Hello` has `title`, `isDisabled`, and `onClick()`; there is no counter yet.
 
 ## Tasks
 
-- [ ] **1.** Add `protected title = 'Welcome to Modern Angular'` to `Hello`.
-- [ ] **2.** Add `protected isDisabled = false`.
-- [ ] **3.** Add `protected onClick() { this.isDisabled = true; alert('Button clicked'); }`.
-- [ ] **4.** In `hello.html`, render `{{ title }}` in an `<h1>`.
-- [ ] **5.** Add `<button [disabled]="isDisabled" (click)="onClick()">Toggle</button>`.
-- [ ] **6.** Click the button: it should disable itself and show the alert.
+- [ ] **1.** Import `signal` from `@angular/core`.
+- [ ] **2.** Add `protected count = signal(0)`.
+- [ ] **3.** Add `increaseCounter()`, `descreaseCounter()`, and `resetCounter()` using `this.count.update(...)` and `this.count.set(0)`.
+- [ ] **4.** In `hello.html`, wrap the content in `<div class="p-2">` and add `{{ count() }}` plus the `+`, `-`, and `RESET` buttons.
+- [ ] **5.** Click the buttons and confirm the number changes immediately.
 
 ## Hints
 
 <details>
-<summary><strong>`protected` and templates</strong></summary>
+<summary><strong>Why `count()`?</strong></summary>
 
-Angular templates can read `protected` members. `protected` keeps the API out of the public surface while still allowing the template to bind.
-
-</details>
-
-<details>
-<summary><strong>Binding syntax</strong></summary>
-
-`[disabled]` sets a DOM property from an expression; `(click)` listens to the DOM event. `{{ }}` is interpolation.
+A signal is a getter function. `count` is the signal object; `count()` reads its current value, and Angular tracks that read for change detection.
 
 </details>
 
 <details>
-<summary><strong>Alert fires twice?</strong></summary>
+<summary><strong>`update` vs `set`</strong></summary>
 
-Make sure you used `(click)="onClick()"` exactly once — a plain `onclick` attribute plus Angular's binding would both run.
+`update(fn)` receives the previous value and returns the next one — ideal for increments. `set(value)` replaces the value outright.
+
+</details>
+
+<details>
+<summary><strong>Tailwind classes</strong></summary>
+
+Classes like `p-2` and `bg-blue-600` come from the global Tailwind import in `src/styles.css`. They are cosmetic; the lab works without them.
 
 </details>
 
 ## Acceptance criteria
 
-- [ ] The heading shows “Welcome to Modern Angular”
-- [ ] Clicking Toggle disables the button and fires the alert
-- [ ] No event handler is attached with `onclick=`; Angular binding syntax is used
+- [ ] Counter starts at 0; + and − change it; RESET returns to 0
+- [ ] State is a `WritableSignal`, not a plain number
+- [ ] Template reads the signal with `count()`
 
 ## Files you'll touch
 
 | File | What changes |
 |---|---|
-| `src/app/hello/hello.ts` | Adds `title`, `isDisabled`, and `onClick()` |
-| `src/app/hello/hello.html` | Adds interpolation, `[disabled]`, and `(click)` |
+| `src/app/hello/hello.ts` | Adds `count` signal and the three handlers |
+| `src/app/hello/hello.html` | Counter readout and buttons |
 
 ## Run it
 

@@ -6,4 +6,13 @@ import { Component } from '@angular/core';
   templateUrl: './hello.html',
   styleUrl: './hello.css',
 })
-export class Hello {}
+export class Hello {
+  protected title = "Welcome to Modern Angular"
+
+  protected isDisabled = false;
+
+  protected onClick(){
+    this.isDisabled = true;
+    alert("Button clicked");
+  }
+}
