@@ -13,6 +13,12 @@ describe('ProductCard', () => {
 
     fixture = TestBed.createComponent(ProductCard);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('product', {
+      id: 1,
+      name: 'Test product',
+      description: 'A product used by the unit test.',
+      price: 9.99,
+    });
     await fixture.whenStable();
   });
 
