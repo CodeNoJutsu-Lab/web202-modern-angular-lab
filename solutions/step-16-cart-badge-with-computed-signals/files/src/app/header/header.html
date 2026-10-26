@@ -1,0 +1,11 @@
+<mat-toolbar class="main-header">
+  <button matButton>
+    <mat-icon aria-hidden="false" aria-label="Home" fontIcon="store"></mat-icon>
+  </button>
+  <span class="branding">Modern Angular</span>
+
+  <span class="spacer"></span>
+
+  <button matButton>Products</button>
+  <mat-icon [matBadge]="cartService.tottalItems()" [matBadgeHidden]="cartService.tottalItems()== 0" aria-hidden="false" aria-label="Cart" fontIcon="shopping_cart"></mat-icon>
+</mat-toolbar>
