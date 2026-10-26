@@ -1,70 +1,78 @@
-# Step 09 — Rendering Lists with Signals and @for
+# Step 10 — Passing Data to Child Components with input()
 
-**Course step:** 10 · **Branch:** `step-09-rendering-lists-with-signals-and-for` · **Solution tag:** `solution-step-09`
+**Course step:** 11 · **Branch:** `step-10-passing-data-with-input` · **Solution tag:** `solution-step-10`
 
 ## Goal
 
-Model products, hold them in a writable signal, and render the list with `@for` (including `track` and `@empty`).
+Pass each product into the card with signal inputs and render real product data.
 
 ## What you'll learn
 
-- TypeScript interfaces for domain models
-- Signals holding arrays
-- `@for` with `track`
-- `@empty` blocks
-- Why `track` matters for DOM reuse
+- `input.required<T>()`
+- Optional inputs with a default: `input(...)`
+- Binding inputs in a parent template
+- Calling input signals in the child template
 
 ## Starting point
 
-The grid renders five hardcoded `<app-product-card/>` placeholders; there is no `Product` type and no data.
+`ProductsGrid` has a `products` signal and loops with `@for`, but `ProductCard` has no inputs and renders placeholder text.
 
 ## Tasks
 
-- [ ] **1.** Create `src/app/products/product.ts` with `id`, `name`, `description`, `price`, and optional `originalPrice`.
-- [ ] **2.** In `products-grid.ts`, import `signal`, `Product`, and `MatIconModule`; add a `products` signal containing three products (use the reference values or invent your own).
-- [ ] **3.** Replace the five static cards with `@for (product of products(); track product.id) { ... }`.
-- [ ] **4.** Add an `@empty` block with a `mat-icon` and a “No products available” message.
-- [ ] **5.** Show `Total products: {{ products().length }}` above the grid.
-- [ ] **6.** Rename `.grid` to `.products-grid`, add `.products-container` and the empty-state styles.
+- [ ] **1.** In `product-card.ts`, import `input` and `Product`.
+- [ ] **2.** Add `readonly product = input.required<Product>()` and `readonly addButtonLabel = input('Add to Cart')`.
+- [ ] **3.** Update the card template to render `product().name`, `product().description`, `product().price`, and `addButtonLabel()`.
+- [ ] **4.** In `products-grid.html`, bind the product: `<app-product-card [product]="product"/>`.
+- [ ] **5.** Move the total-products heading below the grid and add `margin-top: 5px` to the grid.
+- [ ] **6.** Update the generated `product-card.spec.ts`: set the required input with `fixture.componentRef.setInput('product', {...})` before `whenStable()`, then run `npm test`.
 
 ## Hints
 
 <details>
-<summary><strong>`@empty` is part of `@for`</strong></summary>
+<summary><strong>Required input error</strong></summary>
 
-The `@empty` block must sit immediately after the `@for` block; it has no condition of its own.
-
-</details>
-
-<details>
-<summary><strong>Cards still show placeholder text</strong></summary>
-
-Correct — `ProductCard` does not accept an input yet. Step 10 wires the data into the card.
+`input.required<Product>()` throws if the parent forgets `[product]`. That is the point — it makes the contract explicit.
 
 </details>
 
 <details>
-<summary><strong>Do not use `*ngFor`</strong></summary>
+<summary><strong>Reading inputs</strong></summary>
 
-This course uses the built-in control flow. `@for` requires a `track` expression.
+Inputs are signals. Use `product()` in the template, not `product`.
+
+</details>
+
+<details>
+<summary><strong>Alias not needed</strong></summary>
+
+The property name `product` becomes the binding name `[product]`.
+
+</details>
+
+<details>
+<summary><strong>The generated card spec now fails</strong></summary>
+
+After adding `input.required`, creating `ProductCard` in isolation throws `NG0950: Input "product" is required but no value is available yet`. Provide a value before stability: `fixture.componentRef.setInput('product', { id: 1, name: 'Test', description: '...', price: 1 })`.
 
 </details>
 
 ## Acceptance criteria
 
-- [ ] Three cards render from the signal (placeholder card content is expected at this stage)
-- [ ] The total reads 3
-- [ ] The loop uses `track product.id`
-- [ ] An `@empty` block exists and would render for an empty array
+- [ ] The three cards show real names, descriptions, and prices
+- [ ] The button label comes from the input default
+- [ ] The parent does not pass `addButtonLabel` (the default is intentional)
+- [ ] No `@Input()` decorators are used
+- [ ] `npm test` passes (including the updated `ProductCard` spec)
 
 ## Files you'll touch
 
 | File | What changes |
 |---|---|
-| `src/app/products/product.ts` | New `Product` interface |
-| `src/app/products/products-grid/products-grid.ts` | Products signal + `MatIconModule` |
-| `src/app/products/products-grid/products-grid.html` | `@for` / `@empty` and total count |
-| `src/app/products/products-grid/products-grid.css` | Container, grid, and empty-state styles |
+| `src/app/products/product-card/product-card.ts` | `input.required<Product>()` + optional label input |
+| `src/app/products/product-card/product-card.html` | Renders `product()` data |
+| `src/app/products/product-card/product-card.spec.ts` | Provides the required input in the test |
+| `src/app/products/products-grid/products-grid.html` | Passes `[product]="product"` |
+| `src/app/products/products-grid/products-grid.css` | Grid margin tweak |
 
 ## Run it
 
@@ -74,7 +82,3 @@ npm start
 ```
 
 Then open <http://localhost:4200>. Use `npm test` for the unit tests and `npm run build` before you compare with the solution.
-
-## Notes
-
-The `empty-state` CSS uses Material system variables (`--mat-sys-*`). They are available because the theme is loaded globally.
