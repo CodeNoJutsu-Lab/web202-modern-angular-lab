@@ -1,64 +1,63 @@
-# Step 05 — Computed Signals
+# Step 06 — Effects (Signals)
 
-**Course step:** 06 · **Branch:** `step-05-computed-signals` · **Solution tag:** `solution-step-05`
+**Course step:** 07 · **Branch:** `step-06-effects-signals` · **Solution tag:** `solution-step-06`
 
 ## Goal
 
-Derive state with a computed signal so the doubled value stays in sync automatically.
+Use `effect()` to run a side effect whenever the counter changes, and understand when effects are the right tool.
 
 ## What you'll learn
 
-- `computed()` for derived state
-- Dependency tracking between signals
-- Why derived state should not be duplicated
-- Read-only nature of computed signals
+- Creating an effect in an injection context
+- Automatic dependency tracking
+- The difference between `computed` and `effect`
+- Why effects are for side effects, not state
 
 ## Starting point
 
-`count` is a writable signal and the template shows only the raw count.
+`Hello` has `count` and `doubleCount` signals; nothing logs changes.
 
 ## Tasks
 
-- [ ] **1.** Import `computed` and add `protected doubleCount = computed(() => this.count() * 2)`.
-- [ ] **2.** Update the template to show `Count: {{ count() }}` and `Double Count: {{ doubleCount() }}`.
-- [ ] **3.** Mark `increaseCounter`, `descreaseCounter`, and `resetCounter` as `protected` so the template can keep calling them.
-- [ ] **4.** Click + and − and verify both numbers stay in sync.
+- [ ] **1.** Import `effect` from `@angular/core`.
+- [ ] **2.** Add `private readonly countLog = effect(() => console.log('Count changed: ', this.count()))`.
+- [ ] **3.** Open the browser console: the effect logs once immediately, then once per counter change.
+- [ ] **4.** Keep a reference to the effect (the field does this); do not create it inline in a method that runs repeatedly.
 
 ## Hints
 
 <details>
-<summary><strong>Computed is lazy and cached</strong></summary>
+<summary><strong>Effect timing</strong></summary>
 
-The function runs when the value is read and is recomputed only when a signal it read changes. Do not call `doubleCount.set(...)`.
-
-</details>
-
-<details>
-<summary><strong>Do not write to computed</strong></summary>
-
-`computed()` returns a read-only signal. Derive it from `count`; never try to assign to it.
+Effects run at least once after creation and then whenever a tracked signal changes. The first run is not an error.
 
 </details>
 
 <details>
-<summary><strong>Methods must be visible to the template</strong></summary>
+<summary><strong>Injection context</strong></summary>
 
-If you made the handlers `private`, the template cannot call them. Use `protected`.
+Creating an effect in a field initializer or constructor is safe; Angular ties its lifetime to the component. Creating one inside a click handler is usually a bug.
+
+</details>
+
+<details>
+<summary><strong>Effect vs computed</strong></summary>
+
+If you only need a value, use `computed`. Use `effect` for things like logging, storage, or imperative APIs.
 
 </details>
 
 ## Acceptance criteria
 
-- [ ] Double Count is always exactly twice Count
-- [ ] No manual update of `doubleCount` exists
-- [ ] Template reads both signals with `()`
+- [ ] Console shows `Count changed: 0` on load
+- [ ] Each +/−/RESET produces exactly one new log
+- [ ] No signal is written inside the effect (no loop)
 
 ## Files you'll touch
 
 | File | What changes |
 |---|---|
-| `src/app/hello/hello.ts` | Adds `doubleCount` computed and `protected` handlers |
-| `src/app/hello/hello.html` | Displays both values |
+| `src/app/hello/hello.ts` | Adds the `countLog` effect |
 
 ## Run it
 
@@ -68,3 +67,7 @@ npm start
 ```
 
 Then open <http://localhost:4200>. Use `npm test` for the unit tests and `npm run build` before you compare with the solution.
+
+## Notes
+
+Effects are intentionally not used for the product filtering later in the course — that is a pure derivation, so `computed` is the correct tool.
